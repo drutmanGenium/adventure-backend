@@ -1,0 +1,42 @@
+import type { CalendarEvent } from "../types.js"
+
+export const CALENDAR_EVENTS: CalendarEvent[] = [
+  // Noviembre 2026
+  { id: "laguna-esmeralda", title: "Laguna Esmeralda", date: "2026-11-07", month: "Noviembre", year: 2026, difficulty: "Fácil", location: "Ushuaia, Tierra del Fuego", duration: "1 día", groupSize: "2-8", price: "$35.000", spotsLeft: 6 },
+  { id: "glaciar-martial", title: "Glaciar Martial", date: "2026-11-08", month: "Noviembre", year: 2026, difficulty: "Fácil", location: "Ushuaia, Tierra del Fuego", duration: "Medio día", groupSize: "2-8", price: "$15.000", spotsLeft: 8 },
+  { id: "laguna-esmeralda", title: "Laguna Esmeralda", date: "2026-11-14", month: "Noviembre", year: 2026, difficulty: "Fácil", location: "Ushuaia, Tierra del Fuego", duration: "1 día", groupSize: "2-8", price: "$35.000", spotsLeft: 5 },
+  { id: "ojo-del-albino", title: "Glaciar Ojo del Albino", date: "2026-11-15", month: "Noviembre", year: 2026, difficulty: "Moderado", location: "Ushuaia, Tierra del Fuego", duration: "1 día", groupSize: "2-6", price: "$45.000", spotsLeft: 4 },
+  { id: "vinciguerra", title: "Glaciar Vinciguerra y Laguna Azul", date: "2026-11-21", month: "Noviembre", year: 2026, difficulty: "Avanzado", location: "Ushuaia, Tierra del Fuego", duration: "1 día", groupSize: "2-6", price: "$65.000", spotsLeft: 3 },
+  { id: "laguna-esmeralda", title: "Laguna Esmeralda", date: "2026-11-22", month: "Noviembre", year: 2026, difficulty: "Fácil", location: "Ushuaia, Tierra del Fuego", duration: "1 día", groupSize: "2-8", price: "$35.000", spotsLeft: 8 },
+  { id: "glaciar-martial", title: "Glaciar Martial", date: "2026-11-23", month: "Noviembre", year: 2026, difficulty: "Fácil", location: "Ushuaia, Tierra del Fuego", duration: "Medio día", groupSize: "2-8", price: "$15.000", spotsLeft: 7 },
+  { id: "ojo-del-albino", title: "Glaciar Ojo del Albino", date: "2026-11-28", month: "Noviembre", year: 2026, difficulty: "Moderado", location: "Ushuaia, Tierra del Fuego", duration: "1 día", groupSize: "2-6", price: "$45.000", spotsLeft: 5 },
+  { id: "laguna-esmeralda", title: "Laguna Esmeralda", date: "2026-11-29", month: "Noviembre", year: 2026, difficulty: "Fácil", location: "Ushuaia, Tierra del Fuego", duration: "1 día", groupSize: "2-8", price: "$35.000", spotsLeft: 2 },
+  // Diciembre 2026
+  { id: "laguna-esmeralda", title: "Laguna Esmeralda", date: "2026-12-05", month: "Diciembre", year: 2026, difficulty: "Fácil", location: "Ushuaia, Tierra del Fuego", duration: "1 día", groupSize: "2-8", price: "$35.000", spotsLeft: 8 },
+  { id: "glaciar-martial", title: "Glaciar Martial", date: "2026-12-06", month: "Diciembre", year: 2026, difficulty: "Fácil", location: "Ushuaia, Tierra del Fuego", duration: "Medio día", groupSize: "2-8", price: "$15.000", spotsLeft: 6 },
+  { id: "ojo-del-albino", title: "Glaciar Ojo del Albino", date: "2026-12-07", month: "Diciembre", year: 2026, difficulty: "Moderado", location: "Ushuaia, Tierra del Fuego", duration: "1 día", groupSize: "2-6", price: "$45.000", spotsLeft: 4 },
+  { id: "vinciguerra", title: "Glaciar Vinciguerra y Laguna Azul", date: "2026-12-12", month: "Diciembre", year: 2026, difficulty: "Avanzado", location: "Ushuaia, Tierra del Fuego", duration: "1 día", groupSize: "2-6", price: "$65.000", spotsLeft: 3 },
+  { id: "laguna-esmeralda", title: "Laguna Esmeralda", date: "2026-12-13", month: "Diciembre", year: 2026, difficulty: "Fácil", location: "Ushuaia, Tierra del Fuego", duration: "1 día", groupSize: "2-8", price: "$35.000", spotsLeft: 10 },
+  { id: "campamento-vinciguerra", title: "Campamento Vinciguerra", date: "2026-12-14", month: "Diciembre", year: 2026, difficulty: "Avanzado", location: "Ushuaia, Tierra del Fuego", duration: "2 días", groupSize: "2-6", price: "$130.000", spotsLeft: 4 },
+  { id: "glaciar-martial", title: "Glaciar Martial", date: "2026-12-19", month: "Diciembre", year: 2026, difficulty: "Fácil", location: "Ushuaia, Tierra del Fuego", duration: "Medio día", groupSize: "2-8", price: "$15.000", spotsLeft: 8 },
+  { id: "laguna-esmeralda", title: "Laguna Esmeralda", date: "2026-12-20", month: "Diciembre", year: 2026, difficulty: "Fácil", location: "Ushuaia, Tierra del Fuego", duration: "1 día", groupSize: "2-8", price: "$35.000", spotsLeft: 5 },
+  { id: "ojo-del-albino", title: "Glaciar Ojo del Albino", date: "2026-12-21", month: "Diciembre", year: 2026, difficulty: "Moderado", location: "Ushuaia, Tierra del Fuego", duration: "1 día", groupSize: "2-6", price: "$45.000", spotsLeft: 3 },
+  { id: "laguna-esmeralda", title: "Laguna Esmeralda", date: "2026-12-27", month: "Diciembre", year: 2026, difficulty: "Fácil", location: "Ushuaia, Tierra del Fuego", duration: "1 día", groupSize: "2-8", price: "$35.000", spotsLeft: 12 },
+  { id: "vinciguerra", title: "Glaciar Vinciguerra y Laguna Azul", date: "2026-12-28", month: "Diciembre", year: 2026, difficulty: "Avanzado", location: "Ushuaia, Tierra del Fuego", duration: "1 día", groupSize: "2-6", price: "$65.000", spotsLeft: 2 },
+  // Enero 2027
+  { id: "laguna-esmeralda", title: "Laguna Esmeralda", date: "2027-01-03", month: "Enero", year: 2027, difficulty: "Fácil", location: "Ushuaia, Tierra del Fuego", duration: "1 día", groupSize: "2-8", price: "$35.000", spotsLeft: 8 },
+  { id: "glaciar-martial", title: "Glaciar Martial", date: "2027-01-04", month: "Enero", year: 2027, difficulty: "Fácil", location: "Ushuaia, Tierra del Fuego", duration: "Medio día", groupSize: "2-8", price: "$15.000", spotsLeft: 7 },
+  { id: "ojo-del-albino", title: "Glaciar Ojo del Albino", date: "2027-01-10", month: "Enero", year: 2027, difficulty: "Moderado", location: "Ushuaia, Tierra del Fuego", duration: "1 día", groupSize: "2-6", price: "$45.000", spotsLeft: 5 },
+  { id: "vinciguerra", title: "Glaciar Vinciguerra y Laguna Azul", date: "2027-01-11", month: "Enero", year: 2027, difficulty: "Avanzado", location: "Ushuaia, Tierra del Fuego", duration: "1 día", groupSize: "2-6", price: "$65.000", spotsLeft: 4 },
+  { id: "laguna-esmeralda", title: "Laguna Esmeralda", date: "2027-01-17", month: "Enero", year: 2027, difficulty: "Fácil", location: "Ushuaia, Tierra del Fuego", duration: "1 día", groupSize: "2-8", price: "$35.000", spotsLeft: 6 },
+  { id: "campamento-vinciguerra", title: "Campamento Vinciguerra", date: "2027-01-18", month: "Enero", year: 2027, difficulty: "Avanzado", location: "Ushuaia, Tierra del Fuego", duration: "2 días", groupSize: "2-6", price: "$130.000", spotsLeft: 3 },
+  { id: "glaciar-martial", title: "Glaciar Martial", date: "2027-01-24", month: "Enero", year: 2027, difficulty: "Fácil", location: "Ushuaia, Tierra del Fuego", duration: "Medio día", groupSize: "2-8", price: "$15.000", spotsLeft: 8 },
+  { id: "laguna-esmeralda", title: "Laguna Esmeralda", date: "2027-01-25", month: "Enero", year: 2027, difficulty: "Fácil", location: "Ushuaia, Tierra del Fuego", duration: "1 día", groupSize: "2-8", price: "$35.000", spotsLeft: 2 },
+  // Febrero 2027
+  { id: "laguna-esmeralda", title: "Laguna Esmeralda", date: "2027-02-07", month: "Febrero", year: 2027, difficulty: "Fácil", location: "Ushuaia, Tierra del Fuego", duration: "1 día", groupSize: "2-8", price: "$35.000", spotsLeft: 8 },
+  { id: "glaciar-martial", title: "Glaciar Martial", date: "2027-02-08", month: "Febrero", year: 2027, difficulty: "Fácil", location: "Ushuaia, Tierra del Fuego", duration: "Medio día", groupSize: "2-8", price: "$15.000", spotsLeft: 6 },
+  { id: "ojo-del-albino", title: "Glaciar Ojo del Albino", date: "2027-02-14", month: "Febrero", year: 2027, difficulty: "Moderado", location: "Ushuaia, Tierra del Fuego", duration: "1 día", groupSize: "2-6", price: "$45.000", spotsLeft: 4 },
+  { id: "vinciguerra", title: "Glaciar Vinciguerra y Laguna Azul", date: "2027-02-15", month: "Febrero", year: 2027, difficulty: "Avanzado", location: "Ushuaia, Tierra del Fuego", duration: "1 día", groupSize: "2-6", price: "$65.000", spotsLeft: 3 },
+  { id: "laguna-esmeralda", title: "Laguna Esmeralda", date: "2027-02-21", month: "Febrero", year: 2027, difficulty: "Fácil", location: "Ushuaia, Tierra del Fuego", duration: "1 día", groupSize: "2-8", price: "$35.000", spotsLeft: 7 },
+  { id: "campamento-vinciguerra", title: "Campamento Vinciguerra", date: "2027-02-22", month: "Febrero", year: 2027, difficulty: "Avanzado", location: "Ushuaia, Tierra del Fuego", duration: "2 días", groupSize: "2-6", price: "$130.000", spotsLeft: 2 },
+]
