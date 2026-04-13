@@ -1,6 +1,6 @@
 import { Router } from "express"
-import { ACTIVITIES } from "../data/activities.js"
-import { TREKKING_DETAILS } from "../data/trekkings.js"
+import { ACTIVITIES } from "../data/activities"
+import { TREKKING_DETAILS } from "../data/trekkings"
 
 const router = Router()
 

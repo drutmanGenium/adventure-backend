@@ -1,10 +1,10 @@
 import "dotenv/config"
 import express from "express"
 import cors from "cors"
-import activitiesRouter from "./routes/activities.js"
-import calendarRouter from "./routes/calendar.js"
-import bookingsRouter from "./routes/bookings.js"
-import contactRouter from "./routes/contact.js"
+import activitiesRouter from "./routes/activities"
+import calendarRouter from "./routes/calendar"
+import bookingsRouter from "./routes/bookings"
+import contactRouter from "./routes/contact"
 
 const app = express()
 const PORT = process.env.PORT || 3001
