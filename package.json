@@ -4,7 +4,7 @@
   "description": "Mini backend para adventure-website (Ushuaia trekking)",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "tsc",
+    "build": "npx tsc",
     "start": "node dist/index.js"
   },
   "dependencies": {
