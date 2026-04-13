@@ -42,3 +42,5 @@ app.listen(PORT, () => {
   console.log(`  POST /api/contact`)
   console.log(`  GET  /api/contact`)
 })
+
+export default app
