@@ -1,7 +1,7 @@
 import { Router } from "express"
 import { z } from "zod"
-import { ACTIVITIES } from "../data/activities.js"
-import { bookings, nextBookingId } from "../data/store.js"
+import { ACTIVITIES } from "../data/activities"
+import { bookings, nextBookingId } from "../data/store"
 
 const router = Router()
 

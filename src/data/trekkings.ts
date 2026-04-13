@@ -1,4 +1,4 @@
-import type { TrekkingDetail } from "../types.js"
+import type { TrekkingDetail } from "../types"
 
 export const TREKKING_DETAILS: Record<string, TrekkingDetail> = {
   "susana-pm": {

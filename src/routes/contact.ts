@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { z } from "zod"
-import { contactMessages, nextContactId } from "../data/store.js"
+import { contactMessages, nextContactId } from "../data/store"
 
 const router = Router()
 

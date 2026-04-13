@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { CALENDAR_EVENTS } from "../data/calendar.js"
+import { CALENDAR_EVENTS } from "../data/calendar"
 
 const router = Router()
 
