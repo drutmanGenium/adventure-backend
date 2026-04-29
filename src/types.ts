@@ -83,3 +83,13 @@ export interface ContactMessage {
   message: string
   createdAt: string
 }
+
+export interface User {
+  id: string
+  firstName: string
+  lastName: string
+  email: string
+  password: string
+  avatarUrl: string | null
+  createdAt: string
+}
