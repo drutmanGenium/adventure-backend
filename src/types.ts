@@ -83,3 +83,13 @@ export interface ContactMessage {
   message: string
   createdAt: string
 }
+
+export interface UserProfile {
+  id: string
+  name: string
+  email: string
+  avatarData: string // base64-encoded image data
+  avatarMimeType: string // e.g. "image/png", "image/jpeg"
+  createdAt: string
+  updatedAt: string
+}
