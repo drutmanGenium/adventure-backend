@@ -1,8 +1,12 @@
 import { Router } from "express"
 import { z } from "zod"
 import { contactMessages, nextContactId } from "../data/store"
+import { createRateLimiter, RATE_LIMIT_PRESETS } from "../middleware/rate-limiter"
 
 const router = Router()
+
+// Rate limiting para envío de mensajes de contacto
+const contactRateLimiter = createRateLimiter(RATE_LIMIT_PRESETS.contact, "contact-post")
 
 const ContactSchema = z.object({
   name: z.string().min(1, "Nombre es obligatorio"),
@@ -13,7 +17,7 @@ const ContactSchema = z.object({
 })
 
 // POST /api/contact
-router.post("/", (req, res) => {
+router.post("/", contactRateLimiter, (req, res) => {
   const parsed = ContactSchema.safeParse(req.body)
 
   if (!parsed.success) {

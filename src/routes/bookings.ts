@@ -2,8 +2,12 @@ import { Router } from "express"
 import { z } from "zod"
 import { ACTIVITIES } from "../data/activities"
 import { bookings, nextBookingId } from "../data/store"
+import { createRateLimiter, RATE_LIMIT_PRESETS } from "../middleware/rate-limiter"
 
 const router = Router()
+
+// Rate limiting para creación de reservas
+const bookingRateLimiter = createRateLimiter(RATE_LIMIT_PRESETS.booking, "bookings-post")
 
 const BookingSchema = z.object({
   activityId: z.string().min(1, "activityId es obligatorio"),
@@ -21,7 +25,7 @@ const BookingSchema = z.object({
 })
 
 // POST /api/bookings
-router.post("/", (req, res) => {
+router.post("/", bookingRateLimiter, (req, res) => {
   const parsed = BookingSchema.safeParse(req.body)
 
   if (!parsed.success) {
