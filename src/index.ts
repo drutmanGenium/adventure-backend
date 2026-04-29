@@ -9,6 +9,9 @@ import contactRouter from "./routes/contact"
 const app = express()
 const PORT = process.env.PORT || 3001
 
+// Confiar en proxies inversos para obtener la IP real del cliente
+app.set("trust proxy", 1)
+
 // Middleware
 app.use(cors({ origin: process.env.FRONTEND_URL || "http://localhost:3000" }))
 app.use(express.json())
