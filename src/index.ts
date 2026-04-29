@@ -5,6 +5,7 @@ import activitiesRouter from "./routes/activities"
 import calendarRouter from "./routes/calendar"
 import bookingsRouter from "./routes/bookings"
 import contactRouter from "./routes/contact"
+import authRouter from "./routes/auth"
 
 const app = express()
 const PORT = process.env.PORT || 3001
@@ -18,6 +19,7 @@ app.use("/api/activities", activitiesRouter)
 app.use("/api/calendar", calendarRouter)
 app.use("/api/bookings", bookingsRouter)
 app.use("/api/contact", contactRouter)
+app.use("/api/auth", authRouter)
 
 // Health check
 app.get("/api/health", (_req, res) => {
@@ -41,6 +43,9 @@ app.listen(PORT, () => {
   console.log(`  GET  /api/bookings/:id`)
   console.log(`  POST /api/contact`)
   console.log(`  GET  /api/contact`)
+  console.log(`  POST /api/auth/register`)
+  console.log(`  POST /api/auth/login`)
+  console.log(`  GET  /api/auth/me`)
 })
 
 export default app
