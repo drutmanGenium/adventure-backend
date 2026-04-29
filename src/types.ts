@@ -1,5 +1,18 @@
 // ─── Shared types ────────────────────────────────────────────────────────────
 
+export interface User {
+  id: string
+  firstName: string
+  lastName: string
+  email: string
+  /**
+   * Hashed password (scheme$salt$hash format). Plaintext passwords are
+   * never stored — see `src/utils/password.ts` for the hashing helpers.
+   */
+  password: string
+  createdAt: string
+}
+
 export type Difficulty = "Fácil" | "Moderado" | "Avanzado"
 
 export interface Activity {
