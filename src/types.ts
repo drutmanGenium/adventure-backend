@@ -83,3 +83,21 @@ export interface ContactMessage {
   message: string
   createdAt: string
 }
+
+export interface User {
+  id: string
+  firstName: string
+  lastName: string
+  email: string
+  phone: string
+  passwordHash: string
+  passwordSalt: string
+  createdAt: string
+}
+
+export interface Session {
+  token: string
+  userId: string
+  createdAt: string
+  expiresAt: string
+}
