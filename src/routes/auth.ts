@@ -1,7 +1,12 @@
 import { Router } from "express"
 import { z } from "zod"
 import { users, nextUserId } from "../data/store.js"
-import { authMiddleware } from "../middleware/auth.js"
+import {
+  authMiddleware,
+  generateToken,
+  hashPassword,
+  verifyPassword,
+} from "../middleware/auth.js"
 import type { User } from "../types.js"
 import type { Request } from "express"
 
@@ -18,10 +23,6 @@ const LoginSchema = z.object({
   email: z.string().email("Email inválido"),
   password: z.string().min(1, "Contraseña es obligatoria"),
 })
-
-function generateToken(userId: string): string {
-  return Buffer.from(userId).toString("base64")
-}
 
 function sanitizeUser(user: User) {
   return {
@@ -59,7 +60,8 @@ router.post("/register", (req, res) => {
     firstName: data.firstName,
     lastName: data.lastName,
     email: data.email,
-    password: data.password, // In production, hash with bcrypt
+    // Passwords are stored as scrypt hashes (salted) — never plaintext.
+    password: hashPassword(data.password),
     avatarUrl: null,
     createdAt: new Date().toISOString(),
   }
@@ -86,9 +88,9 @@ router.post("/login", (req, res) => {
   }
 
   const { email, password } = parsed.data
-  const user = users.find((u) => u.email === email && u.password === password)
+  const user = users.find((u) => u.email === email)
 
-  if (!user) {
+  if (!user || !verifyPassword(password, user.password)) {
     res.status(401).json({ error: "Email o contraseña incorrectos" })
     return
   }
