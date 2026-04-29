@@ -1,7 +1,24 @@
 import type { Request, Response, NextFunction } from "express"
 import jwt from "jsonwebtoken"
 
-const JWT_SECRET = process.env.JWT_SECRET || "adventure-secret-key-dev"
+// JWT_SECRET must be provided via environment variable. We intentionally do
+// NOT supply a default fallback: a hardcoded default would allow attackers
+// to forge tokens if the env var was ever omitted in production.
+const JWT_SECRET = process.env.JWT_SECRET
+
+// Require a sufficiently random secret. 32 chars is a reasonable minimum
+// for a randomly-generated secret (e.g. `openssl rand -hex 32` -> 64 chars).
+const MIN_JWT_SECRET_LENGTH = 32
+
+if (!JWT_SECRET || JWT_SECRET.length < MIN_JWT_SECRET_LENGTH) {
+  throw new Error(
+    `JWT_SECRET environment variable must be set and at least ${MIN_JWT_SECRET_LENGTH} characters long. ` +
+      `Generate one with: openssl rand -hex 32`,
+  )
+}
+
+// Narrow the type for downstream use after the runtime check above.
+const VERIFIED_JWT_SECRET: string = JWT_SECRET
 
 export interface AuthRequest extends Request {
   userId?: string
@@ -17,7 +34,7 @@ export function authenticateToken(req: AuthRequest, res: Response, next: NextFun
   }
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as { userId: string }
+    const decoded = jwt.verify(token, VERIFIED_JWT_SECRET) as { userId: string }
     req.userId = decoded.userId
     next()
   } catch {
@@ -26,7 +43,7 @@ export function authenticateToken(req: AuthRequest, res: Response, next: NextFun
 }
 
 export function generateToken(userId: string): string {
-  return jwt.sign({ userId }, JWT_SECRET, { expiresIn: "7d" })
+  return jwt.sign({ userId }, VERIFIED_JWT_SECRET, { expiresIn: "7d" })
 }
 
-export { JWT_SECRET }
+export { VERIFIED_JWT_SECRET as JWT_SECRET }
