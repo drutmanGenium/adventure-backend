@@ -83,3 +83,22 @@ export interface ContactMessage {
   message: string
   createdAt: string
 }
+
+export interface User {
+  id: string
+  firstName: string
+  lastName: string
+  email: string
+  password: string
+  phone: string
+  createdAt: string
+}
+
+export interface Session {
+  token: string
+  userId: string
+  createdAt: string
+  // ISO timestamp after which the session is no longer valid. Sessions
+  // are purged opportunistically on lookup; see purgeExpiredSessions.
+  expiresAt: string
+}
