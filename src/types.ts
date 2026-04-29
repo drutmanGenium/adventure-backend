@@ -5,6 +5,10 @@ export interface User {
   firstName: string
   lastName: string
   email: string
+  /**
+   * Hashed password (scheme$salt$hash format). Plaintext passwords are
+   * never stored — see `src/utils/password.ts` for the hashing helpers.
+   */
   password: string
   createdAt: string
 }

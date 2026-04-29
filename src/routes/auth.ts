@@ -2,6 +2,7 @@ import { Router } from "express"
 import { z } from "zod"
 import { users, nextUserId } from "../data/store"
 import { createRateLimiter, AUTH_RATE_LIMITS } from "../middleware/rate-limiter"
+import { hashPassword, verifyPassword } from "../utils/password"
 
 const router = Router()
 
@@ -48,12 +49,15 @@ router.post("/register", registerLimiter, (req, res) => {
     return
   }
 
+  // Hash the password before storage. The plaintext is never persisted.
+  const passwordHash = hashPassword(password)
+
   const user = {
     id: nextUserId(),
     firstName,
     lastName,
     email,
-    password, // En producción: hash con bcrypt
+    password: passwordHash,
     createdAt: new Date().toISOString(),
   }
 
@@ -86,8 +90,12 @@ router.post("/login", loginLimiter, (req, res) => {
 
   const { email, password } = parsed.data
 
-  const user = users.find((u) => u.email === email && u.password === password)
-  if (!user) {
+  // Look up by email first, then verify the password against the stored
+  // hash with a constant-time comparison. We deliberately return the same
+  // generic error for "no such user" and "wrong password" to avoid leaking
+  // which emails are registered.
+  const user = users.find((u) => u.email === email)
+  if (!user || !verifyPassword(password, user.password)) {
     res.status(401).json({ error: "Credenciales inválidas" })
     return
   }
