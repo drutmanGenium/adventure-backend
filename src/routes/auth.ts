@@ -1,4 +1,4 @@
-import { Router } from "express"
+import { Router, type Request, type Response, type NextFunction } from "express"
 import { z } from "zod"
 import {
   users,
@@ -6,9 +6,11 @@ import {
   nextUserId,
   generateToken,
   hashPassword,
+  verifyPassword,
   findUserByEmail,
   findSessionByToken,
   findUserById,
+  SESSION_TTL_MS,
 } from "../data/store"
 
 const router = Router()
@@ -28,8 +30,110 @@ const LoginSchema = z.object({
   password: z.string().min(1, "Contraseña es obligatoria"),
 })
 
+// ─── Rate limiting ───────────────────────────────────────────────────────────
+// Simple fixed-window in-memory rate limiter. Intentionally implemented
+// without an external dependency to avoid expanding the dependency surface.
+// Note: this state is per-process. If the service is ever scaled
+// horizontally, swap this for a shared store (e.g. Redis) so an attacker
+// cannot just spread requests across instances.
+
+interface RateBucket {
+  count: number
+  resetAt: number
+}
+
+interface RateLimiterOptions {
+  windowMs: number
+  max: number
+  // How a request maps to a bucket key. Defaults to client IP.
+  keyFn?: (req: Request) => string
+  message?: string
+}
+
+function clientIp(req: Request): string {
+  // express's req.ip honors trust proxy settings; fall back to socket
+  // remote address if for some reason it's not populated.
+  return (
+    req.ip ||
+    req.socket?.remoteAddress ||
+    "unknown"
+  )
+}
+
+function createRateLimiter(opts: RateLimiterOptions) {
+  const buckets = new Map<string, RateBucket>()
+
+  return function rateLimiter(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): void {
+    const now = Date.now()
+    const key = (opts.keyFn ?? clientIp)(req)
+
+    // Opportunistic cleanup so the map can't grow unbounded.
+    if (buckets.size > 10_000) {
+      for (const [k, b] of buckets) {
+        if (b.resetAt <= now) buckets.delete(k)
+      }
+    }
+
+    let bucket = buckets.get(key)
+    if (!bucket || bucket.resetAt <= now) {
+      bucket = { count: 0, resetAt: now + opts.windowMs }
+      buckets.set(key, bucket)
+    }
+
+    bucket.count += 1
+
+    if (bucket.count > opts.max) {
+      const retryAfterSec = Math.max(1, Math.ceil((bucket.resetAt - now) / 1000))
+      res.setHeader("Retry-After", String(retryAfterSec))
+      res
+        .status(429)
+        .json({
+          error:
+            opts.message ??
+            "Demasiadas solicitudes. Intenta nuevamente más tarde.",
+        })
+      return
+    }
+
+    next()
+  }
+}
+
+// Login: stricter limit per IP to deter brute force / credential stuffing.
+// Combined with the per-(IP+email) limiter below, this protects against
+// both wide spraying and targeted attacks against a single account.
+const loginIpLimiter = createRateLimiter({
+  windowMs: 15 * 60 * 1000,
+  max: 20,
+  message: "Demasiados intentos de inicio de sesión. Intenta más tarde.",
+})
+
+const loginIpEmailLimiter = createRateLimiter({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  message: "Demasiados intentos de inicio de sesión. Intenta más tarde.",
+  keyFn: (req) => {
+    const email =
+      typeof req.body?.email === "string"
+        ? req.body.email.toLowerCase()
+        : ""
+    return `${clientIp(req)}|${email}`
+  },
+})
+
+// Register: deter automated account creation.
+const registerIpLimiter = createRateLimiter({
+  windowMs: 60 * 60 * 1000,
+  max: 10,
+  message: "Demasiados registros desde esta dirección. Intenta más tarde.",
+})
+
 // POST /api/auth/register
-router.post("/register", (req, res) => {
+router.post("/register", registerIpLimiter, (req, res) => {
   const parsed = RegisterSchema.safeParse(req.body)
 
   if (!parsed.success) {
@@ -63,10 +167,12 @@ router.post("/register", (req, res) => {
 
   // Create session
   const token = generateToken()
+  const now = new Date()
   sessions.push({
     token,
     userId: user.id,
-    createdAt: new Date().toISOString(),
+    createdAt: now.toISOString(),
+    expiresAt: new Date(now.getTime() + SESSION_TTL_MS).toISOString(),
   })
 
   res.status(201).json({
@@ -83,7 +189,7 @@ router.post("/register", (req, res) => {
 })
 
 // POST /api/auth/login
-router.post("/login", (req, res) => {
+router.post("/login", loginIpLimiter, loginIpEmailLimiter, (req, res) => {
   const parsed = LoginSchema.safeParse(req.body)
 
   if (!parsed.success) {
@@ -102,17 +208,19 @@ router.post("/login", (req, res) => {
     return
   }
 
-  if (user.password !== hashPassword(data.password)) {
+  if (!verifyPassword(data.password, user.password)) {
     res.status(401).json({ error: "Email o contraseña incorrectos" })
     return
   }
 
   // Create session
   const token = generateToken()
+  const now = new Date()
   sessions.push({
     token,
     userId: user.id,
-    createdAt: new Date().toISOString(),
+    createdAt: now.toISOString(),
+    expiresAt: new Date(now.getTime() + SESSION_TTL_MS).toISOString(),
   })
 
   res.json({

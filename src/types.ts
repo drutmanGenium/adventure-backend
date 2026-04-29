@@ -98,4 +98,7 @@ export interface Session {
   token: string
   userId: string
   createdAt: string
+  // ISO timestamp after which the session is no longer valid. Sessions
+  // are purged opportunistically on lookup; see purgeExpiredSessions.
+  expiresAt: string
 }
