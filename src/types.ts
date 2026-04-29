@@ -1,5 +1,14 @@
 // ─── Shared types ────────────────────────────────────────────────────────────
 
+export interface User {
+  id: string
+  firstName: string
+  lastName: string
+  email: string
+  password: string
+  createdAt: string
+}
+
 export type Difficulty = "Fácil" | "Moderado" | "Avanzado"
 
 export interface Activity {

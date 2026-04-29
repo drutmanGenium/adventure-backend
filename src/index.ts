@@ -5,6 +5,7 @@ import activitiesRouter from "./routes/activities"
 import calendarRouter from "./routes/calendar"
 import bookingsRouter from "./routes/bookings"
 import contactRouter from "./routes/contact"
+import authRouter from "./routes/auth"
 
 const app = express()
 const PORT = process.env.PORT || 3001
@@ -14,6 +15,7 @@ app.use(cors({ origin: process.env.FRONTEND_URL || "http://localhost:3000" }))
 app.use(express.json())
 
 // Routes
+app.use("/api/auth", authRouter)
 app.use("/api/activities", activitiesRouter)
 app.use("/api/calendar", calendarRouter)
 app.use("/api/bookings", bookingsRouter)
@@ -33,6 +35,8 @@ app.listen(PORT, () => {
   console.log(`Adventure backend corriendo en http://localhost:${PORT}`)
   console.log(`Endpoints disponibles:`)
   console.log(`  GET  /api/health`)
+  console.log(`  POST /api/auth/register  (rate limited: ${process.env.AUTH_REGISTER_MAX_ATTEMPTS || 3} intentos/hora)`)
+  console.log(`  POST /api/auth/login     (rate limited: ${process.env.AUTH_LOGIN_MAX_ATTEMPTS || 5} intentos/15min)`)
   console.log(`  GET  /api/activities`)
   console.log(`  GET  /api/activities/:id`)
   console.log(`  GET  /api/calendar`)
