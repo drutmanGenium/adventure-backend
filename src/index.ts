@@ -1,10 +1,14 @@
 import "dotenv/config"
 import express from "express"
 import cors from "cors"
+import { readFileSync } from "node:fs"
+import { join } from "node:path"
 import activitiesRouter from "./routes/activities"
 import calendarRouter from "./routes/calendar"
 import bookingsRouter from "./routes/bookings"
 import contactRouter from "./routes/contact"
+
+const packageJson = JSON.parse(readFileSync(join(__dirname, "../package.json"), "utf-8"))
 
 const app = express()
 const PORT = process.env.PORT || 3001
@@ -24,6 +28,11 @@ app.get("/api/health", (_req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() })
 })
 
+// Version
+app.get("/api/version", (_req, res) => {
+  res.json({ version: packageJson.version, timestamp: new Date().toISOString() })
+})
+
 // 404
 app.use((_req, res) => {
   res.status(404).json({ error: "Ruta no encontrada" })
@@ -33,6 +42,7 @@ app.listen(PORT, () => {
   console.log(`Adventure backend corriendo en http://localhost:${PORT}`)
   console.log(`Endpoints disponibles:`)
   console.log(`  GET  /api/health`)
+  console.log(`  GET  /api/version`)
   console.log(`  GET  /api/activities`)
   console.log(`  GET  /api/activities/:id`)
   console.log(`  GET  /api/calendar`)
