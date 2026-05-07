@@ -24,6 +24,11 @@ app.get("/api/health", (_req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() })
 })
 
+// Ping
+app.get("/api/ping", (_req, res) => {
+  res.json({ pong: true, timestamp: new Date().toISOString() })
+})
+
 // 404
 app.use((_req, res) => {
   res.status(404).json({ error: "Ruta no encontrada" })
@@ -33,6 +38,7 @@ app.listen(PORT, () => {
   console.log(`Adventure backend corriendo en http://localhost:${PORT}`)
   console.log(`Endpoints disponibles:`)
   console.log(`  GET  /api/health`)
+  console.log(`  GET  /api/ping`)
   console.log(`  GET  /api/activities`)
   console.log(`  GET  /api/activities/:id`)
   console.log(`  GET  /api/calendar`)
