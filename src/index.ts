@@ -8,6 +8,7 @@ import contactRouter from "./routes/contact"
 
 const app = express()
 const PORT = process.env.PORT || 3001
+const SERVER_STARTED_AT = new Date()
 
 // Middleware
 app.use(cors({ origin: process.env.FRONTEND_URL || "http://localhost:3000" }))
@@ -24,6 +25,14 @@ app.get("/api/health", (_req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() })
 })
 
+// Uptime
+app.get("/api/uptime", (_req, res) => {
+  res.json({
+    uptimeSeconds: process.uptime(),
+    startedAt: SERVER_STARTED_AT.toISOString(),
+  })
+})
+
 // 404
 app.use((_req, res) => {
   res.status(404).json({ error: "Ruta no encontrada" })
@@ -33,6 +42,7 @@ app.listen(PORT, () => {
   console.log(`Adventure backend corriendo en http://localhost:${PORT}`)
   console.log(`Endpoints disponibles:`)
   console.log(`  GET  /api/health`)
+  console.log(`  GET  /api/uptime`)
   console.log(`  GET  /api/activities`)
   console.log(`  GET  /api/activities/:id`)
   console.log(`  GET  /api/calendar`)
